@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KALAR DETECTED</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Phone frame */
+.phone {
+  width: 390px;
+  height: 844px;
+  overflow: hidden;
+  position: relative;
+  background: black;
+}
+
+/* Background */
+.screen {
+  width: 100%;
+  height: 100%;
+  background: url("background.jpg") center / cover no-repeat;
+  position: relative;
+}
+
+/* Scanner */
+.scanner {
+  position: absolute;
+  top: 130px;
+  width: 100%;
+  text-align: center;
+  color: red;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  opacity: 0;
+}
+.scanner.active {
+  opacity: 1;
+  animation: glitchText 0.15s infinite;
+}
+
+/* Loader */
+.loader {
+  position: absolute;
+  top: 205px;
+  left: 175px;
+  width: 40px;
+  height: 40px;
+  border: 4px solid transparent;
+  border-top: 4px solid red;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* KALAR DETECTED */
+.detected {
+  position: absolute;
+  top: 300px;
+  width: 100%;
+  text-align: center;
+  color: red;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  opacity: 0;
+}
+
+/* ✅ ARROW — NOW ACTUALLY, DEFINITELY ON THE HAND */
+.arrow {
+  position: absolute;
+  top: 260px;   /* fingers under cone */
+  left: 35px;   /* WAYYY left */
+  width: 140px;
+  opacity: 0;
+}
+.arrow.active {
+  animation: arrowWiggle 1s ease-in-out infinite;
+}
+.arrow path {
+  stroke: red;
+  stroke-width: 6;
+  fill: none;
+}
+
+/* Birthday */
+.birthday {
+  position: absolute;
+  bottom: 130px;
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
+  color: white;
+  opacity: 0;
+}
+.party {
+  position: absolute;
+  bottom: 85px;
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+  opacity: 0;
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  top: -10px;
+  animation: confettiFall linear infinite;
+  border-radius: 2px;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes arrowWiggle {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(-8px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes glitchText {
+  0% { transform: translateX(0); opacity: 1; }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); opacity: 0.85; }
+  80% { transform: translateX(1px); }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translate(var(--drift), 900px) rotate(360deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+  <div class="screen" id="screen">
+
+    <div class="scanner" id="scanner">SCANNING BIOMETRICS…</div>
+    <div class="loader" id="loader"></div>
+
+    <div class="detected" id="detected">KALAR DETECTED</div>
+
+    <!-- LEFT‑POINTING ARROW -->
+    <svg class="arrow" id="arrow" viewBox="0 0 140 60">
+      <path d="M130 30 L20 30 M20 30 L45 10 M20 30 L45 50" />
+    </svg>
+
+    <div class="birthday" id="birthday">Happy Birthday Gary!</div>
+    <div class="party" id="party">🎉 🎂 🎉</div>
+
+  </div>
+</div>
+
+<script>
+const scanner  = document.getElementById("scanner");
+const loader   = document.getElementById("loader");
+const detected = document.getElementById("detected");
+const arrow    = document.getElementById("arrow");
+const birthday = document.getElementById("birthday");
+const party    = document.getElementById("party");
+const screen   = document.getElementById("screen");
+
+setTimeout(() => {
+  scanner.classList.add("active");
+  loader.style.opacity = "1";
+  loader.style.animation = "spin 1s linear infinite";
+}, 800);
+
+setTimeout(() => {
+  scanner.classList.remove("active");
+  scanner.style.opacity = "0";
+  loader.style.opacity = "0";
+  loader.style.animation = "none";
+}, 4200);
+
+setTimeout(() => {
+  detected.style.opacity = "1";
+  arrow.style.opacity = "1";
+  arrow.classList.add("active");
+}, 4800);
+
+setTimeout(() => {
+  birthday.style.opacity = "1";
+  party.style.opacity = "1";
+
+  for (let i = 0; i < 45; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    const size = Math.random() * 6 + 6;
+    c.style.width = size + "px";
+    c.style.height = size + "px";
+    c.style.left = Math.random() * 390 + "px";
+    c.style.background =
+      ["red","gold","white","pink","orange"][Math.floor(Math.random()*5)];
+    c.style.animationDuration = (Math.random()*2 + 3) + "s";
+    c.style.setProperty("--drift", (Math.random()*80 - 40) + "px");
+    screen.appendChild(c);
+  }
+}, 6500);
+</script>
+
+</body>
+</html>
